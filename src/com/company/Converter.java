@@ -3,7 +3,9 @@ package com.company;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
+// lib for clipboard
+import java.awt.datatransfer.*;
+import java.awt.Toolkit;
 
 /**
  * Created by Samir on 17.3.2017 г..
@@ -30,10 +32,15 @@ public class Converter {
                 base = Double.parseDouble(baseSizeTextField.getText());
                 //rem = target/body
                 double result = target/base;
-                //format double
-                DecimalFormat df = new DecimalFormat("#.#");
+
+                //copy to clipboard
+                String clipString = String.format("%.1f",result);
+                StringSelection stringSelection = new StringSelection(clipString);
+                Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clpbrd.setContents(stringSelection,null);
+
                 //output
-                JOptionPane.showMessageDialog(null,df.format(result) + " REM");
+                JOptionPane.showMessageDialog(null,clipString + " REM");
             }
         });
     }
