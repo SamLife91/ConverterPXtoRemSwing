@@ -6,6 +6,9 @@ import java.awt.event.ActionListener;
 // lib for clipboard
 import java.awt.datatransfer.*;
 import java.awt.Toolkit;
+//regex libs
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Samir on 17.3.2017 г..
@@ -19,31 +22,45 @@ public class Converter {
     public JLabel target;
     public JPanel panel1;
 
-
+    //regex
+    public static final String REGEX ="^[0-9, ]+$" ;
 
     public Converter() {
         //eventList CalcButton
         Calculate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String target1 = targetSizeTextField.getText();
+                String base1 = baseSizeTextField.getText();
                 double target;
-                target = Double.parseDouble(targetSizeTextField.getText());
                 double base;
-                base = Double.parseDouble(baseSizeTextField.getText());
+
+                //regex logic
+                Pattern p = Pattern.compile(REGEX);
+                Matcher targetInput = p.matcher(target1);
+                Matcher baseInput = p.matcher(base1);
                 //rem = target/body
-                double result = target/base;
-
-                //copy to clipboard
-                String clipString = String.format("%.1f",result);
-                StringSelection stringSelection = new StringSelection(clipString);
-                Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clpbrd.setContents(stringSelection,null);
-
-                //output
-                JOptionPane.showMessageDialog(null,clipString + " REM");
+                if (targetInput.matches() && baseInput.matches()){
+                    //cast strings to double
+                    base = Double.parseDouble(base1);
+                    target = Double.parseDouble(target1);
+                    //formula res=tar/base
+                    double result = target / base;
+                    //copy to clipboard
+                    String clipString = String.format("%.1f",result);
+                    StringSelection stringSelection = new StringSelection(clipString);
+                    Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
+                    clpbrd.setContents(stringSelection,null);
+                    //output
+                    JOptionPane.showMessageDialog(null,clipString + " REM");
+                }
+                else {
+                   JOptionPane.showMessageDialog(null, " invalid inputs");
+                }
             }
         });
     }
+
 
     private void createUIComponents() {
       /* TODO: place custom component creation code here */
