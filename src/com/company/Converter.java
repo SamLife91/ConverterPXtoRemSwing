@@ -1,5 +1,5 @@
 package com.company;
-
+// swing libs.
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
  * Created by Samir on 17.3.2017 г..
  */
 public class Converter {
-
     public JTextField targetSizeTextField;
     public JTextField baseSizeTextField;
     public JButton Calculate;
@@ -22,8 +21,8 @@ public class Converter {
     public JLabel target;
     public JPanel panel1;
 
-    //regex
-    public static final String REGEX ="^[0-9, ]+$" ;
+    //regex only numbers
+    public static final String REGEX ="^[0-9, ]+$";
 
     public Converter() {
         //eventList CalcButton
@@ -34,23 +33,29 @@ public class Converter {
                 String base1 = baseSizeTextField.getText();
                 double target;
                 double base;
+                double result;
 
-                //regex logic
+                //regex functionality
                 Pattern p = Pattern.compile(REGEX);
                 Matcher targetInput = p.matcher(target1);
                 Matcher baseInput = p.matcher(base1);
+
                 //rem = target/body
                 if (targetInput.matches() && baseInput.matches()){
+
                     //cast strings to double
                     base = Double.parseDouble(base1);
                     target = Double.parseDouble(target1);
+
                     //formula res=tar/base
-                    double result = target / base;
+                    result = target / base;
+
                     //copy to clipboard
                     String clipString = String.format("%.1f",result);
                     StringSelection stringSelection = new StringSelection(clipString);
                     Clipboard clpbrd = Toolkit.getDefaultToolkit().getSystemClipboard();
                     clpbrd.setContents(stringSelection,null);
+
                     //output
                     JOptionPane.showMessageDialog(null,clipString + " REM");
                 }
@@ -75,5 +80,4 @@ public class Converter {
         frame.pack();
         frame.setVisible(true);
     }
-
 }
